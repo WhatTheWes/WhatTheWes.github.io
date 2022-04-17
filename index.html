@@ -1,13 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>test</title>
- </head>
- <body>
- 
-  <h1>Github Test Page</h1>
-  
-  <p>Hello Github!</p>
-  
- </body></html>
+<head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Prog5</title>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script> 				<!-- Handlebar Template ---> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 				<!-- Bootstrap --->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>							      <!-- Bootstrap --->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>							    <!-- Bootstrap --->
+	
+</head>
+
+<body>
+	<div class="container"> 																							                                       <!-- Div for Bootstrap styling --->
+		<h2>Select a Major</h2>																							                                       <!-- Heading --->
+			<button type='button' class="btn btn-primary" onClick="getData('citMajors')">CIT Majors</button>			      <!-- Button calls to fuction titled              citMajors--->
+			<button type='button' class="btn btn-primary" onClick="getData('businessMajors')">Business Majors</button>  <!-- Button calls to fuction titled              businessMajors--->
+		<br>																											<!-- Break ---> 
+		<p><strong>We filter our dataset by major </strong></p> 
+	</div>																												<!-- Closing tag for bootstrap div ---> 
+</body> 
+</html>
