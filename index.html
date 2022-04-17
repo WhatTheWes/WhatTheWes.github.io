@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Prog5</title>
-	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script> 				<!-- Handlebar Template ---> 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 				<!-- Bootstrap --->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>							      <!-- Bootstrap --->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>							    <!-- Bootstrap --->
-	
-</head>
+	<head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Prog5</title>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script> 				<!-- Handlebar Template ---> 
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 				<!-- Bootstrap --->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>							<!-- Bootstrap --->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>							<!-- Bootstrap --->
+		
+	</head>
 
-<body>
-	<div class="container"> 																							                                       <!-- Div for Bootstrap styling --->
-		<h2>Select a Major</h2>																							                                       <!-- Heading --->
-			<button type='button' class="btn btn-primary" onClick="getData('citMajors')">CIT Majors</button>			      <!-- Button calls to fuction titled              citMajors--->
-			<button type='button' class="btn btn-primary" onClick="getData('businessMajors')">Business Majors</button>  <!-- Button calls to fuction titled              businessMajors--->
-		<br>																											<!-- Break ---> 
-		<p><strong>We filter our dataset by major </strong></p> 
-	</div>																												<!-- Closing tag for bootstrap div ---> 
-</body> 
-</html>
+	<body>
+		<div class="container"> 																							<!-- Div for Bootstrap styling --->
+			<h2>Select a Major</h2>																							<!-- Heading --->
+				<button type='button' class="btn btn-primary" onClick="getData('CIT')">CIT Majors</button>					<!-- Button calls to fuction titled getData            (CIT)--->
+				<button type='button' class="btn btn-primary" onClick="getData('BUS')">Business Majors</button>  			<!-- Button calls to fuction titled getData            (BUS)--->
+			<br>																											<!-- Break ---> 
+			<p><strong>We filter our dataset by major </strong></p> 
+		</div>																												<!-- Closing tag for bootstrap div ---> 
+		<div id="majorsTable"></div>
+	</body> 
+
+	<script type="text/x-handlebars-template" id="tableTemplate">															<!-- Handlebars Template ---> 
+		<table class="table table-striped">																					<!-- Bootstrap --->
+			<tr><th>Name</th><th>Major</th><th>Midterm</th><th>Final</th></tr>												<!-- Table Header ---> 
+				{{#each rows}}																								<!-- Repeats for Each Object Record --->
+					<tr>
+						<td>{{name}}</td><td>{{major}}</td><td>{{midterm}}</td><td>{{final}}</td>							<!-- Table Format and Where JSON data will placed --->
+					</tr>
+				{{/each}}
+		</table>
+	</script>
+
+	<script>
+		function getData(selected_major) {																					<!-- Function creates XML Request --->
+			var request = new XMLHttpRequest();
+			request.open('GET', 'cit5students.json');                                                              		<!--- Opens JSON file --->
+			
+			request.onload = function() {                                                                         		<!-- Function Triggers After XML Request for JSON is Completed --->
+				var data = JSON.parse(request.responseText);															<!-- Converts JSON into JS array --->
+				
+				students_by_major = data.filter(getStudents)															<!-- Contains filtered JSON Data --->
+				function getStudents(item) {																			<!-- Function to Filter JSON Data ---> 
+					return item.major == selected_major;																<!-- Returns items equal to the Major --->
+				}
+				
+				if (request.status == 200) {
+					var templateText = document.getElementById('tableTemplate').innerHTML;
+					var compiledTemplateText = Handlebars.compile(templateText);
+					compiledHtml = compiledTemplateText({ rows: students_by_major })
+					document.getElementById('majorsTable').innerHTML = compiledHtml;
+				}
+				else {
+					document.querySelector('#majorsTable').innerHTML = "There was an error, or students by major not found";
+				}
+			}
+			
+			request.send(null);
+		}
+	</script>
+</html>	
