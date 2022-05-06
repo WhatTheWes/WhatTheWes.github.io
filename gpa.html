@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Wes Jenkins 5/2/22 CIT 140 Prather --->
+		<title>Program #6</title>																															<!-- Title --->
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">                                    		<!-- References to Bootstrap and Angular --->
+			  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>														<!-- References to Bootstrap and Angular --->
+			  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>													<!-- References to Bootstrap and Angular --->
+			  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script> 													<!-- References to Bootstrap and Angular --->
+	</head>
+	
+	<body ng-app = "studentsApp">
+		<div class="container">																																<!-- Nav Bar Div --->
+		<nav class="navbar navbar-inverse">																													<!-- Nav Tag With Styling --->
+			<div class="navbar-header">							
+				<a class="navbar-brand" href="#">Our Website</a>
+			</div>
+			<div>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="index.html">All Advisees</a></li>																			<!-- Nav Bar Links To Main Index Page ---> 
+					<li><a href="gpa.html">Grade Point Averages</a></li>																					<!-- Nav Bar Link To Grade Point Averages ---> 
+				</ul>
+			</div>
+		</nav>
+			<div ng-controller = "allCtrl">																													<!-- Angular Controller For Form ---> 
+				<h2>Advisees</h2>																															<!-- Header --->
+					<p><input type='text' ng-model='search_text' > Enter Search text</p>																	<!-- Angular Search Bar ---> 
+					<table class="table table-bordered table-striped">																						<!-- Table With Bootstrap --->
+						<tr>
+							<th>SID</th> <th>Last Name</th> <th>First Name</th> <th>GPA</th>					<!-- Table Headers --->
+						</tr>
+			  
+						<tr ng-repeat = "student in students | filter:search_text">  																		<!-- ng-repeat Element That Creates The Table -->
+							<td>{{student.id}}</td>																											<!-- Table Data Entries --->
+							<td>{{student.last_name}}</td>																									<!-- Table Data Entries --->
+							<td>{{student.first_name}}</td>																									<!-- Table Data Entries --->
+
+							<td>{{(student.gpa_points / student.credit_hrs).toFixed(1)}}</td>																<!-- Table Data Entries --->
+						</tr>
+					</table>
+			</div>   
+		</div>   
+		<script>
+			var app = angular.module('studentsApp', []);
+			app.controller('allCtrl', function($scope, $http) {
+		  
+				$http.get("students.json")          // get all the car data
+				.then(function (response) {
+					$scope.students = response.data;    // put the data in the table
+				});
+			});
+		</script>
+	</body>
+</html> 
